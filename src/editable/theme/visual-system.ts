@@ -68,17 +68,17 @@ export const visualPresets = {
   },
   'tech-directory': {
     label: 'Tech Directory',
-    mood: 'clean, fast, useful',
+    mood: 'clean, local, useful',
     fontDirection: 'modern sans with crisp mono data accents',
     colors: {
-      background: '#f6f9fc',
-      foreground: '#101827',
-      muted: '#5f6b7a',
-      primary: '#0f172a',
-      accent: '#00a6ff',
+      background: '#f7f8fb',
+      foreground: '#151827',
+      muted: '#667085',
+      primary: '#2d275b',
+      accent: '#ff6b2b',
       surface: '#ffffff',
     },
-    shape: 'clean grids, pill filters, sharp information hierarchy',
+    shape: 'compact grids, useful filters, clear business comparison',
   },
   'retro-bulletin': {
     label: 'Retro Bulletin',
@@ -147,7 +147,7 @@ export const visualSystem = {
   },
   layout: {
     page: 'mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8',
-    sectionY: 'py-12 sm:py-16 lg:py-20',
+    sectionY: 'py-10 sm:py-12 lg:py-14',
     cardGrid: 'grid gap-5 sm:grid-cols-2 lg:grid-cols-3',
   },
 } as const
