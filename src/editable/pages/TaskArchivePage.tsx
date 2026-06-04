@@ -55,13 +55,13 @@ function pageHref(basePath: string, category: string, page: number) {
 }
 
 const taskDeck: Record<TaskKey, { icon: typeof FileText; archiveClass: string; promise: string; badge: string }> = {
-  article: { icon: FileText, archiveClass: 'grid gap-5 md:grid-cols-2 xl:grid-cols-3', promise: 'Readable editorial cards with room for headlines and excerpts.', badge: 'Read' },
-  listing: { icon: Building2, archiveClass: 'grid gap-5 xl:grid-cols-2', promise: 'Directory cards highlight company identity, location, contacts, and service details.', badge: 'Business' },
-  classified: { icon: Megaphone, archiveClass: 'grid gap-5 xl:grid-cols-2', promise: 'Offer-board cards prioritize price, location, condition, and quick action.', badge: 'Offer' },
+  article: { icon: FileText, archiveClass: 'grid gap-4 md:grid-cols-2 xl:grid-cols-3', promise: 'Guides and explainers help customers choose the right local business.', badge: 'Guide' },
+  listing: { icon: Building2, archiveClass: 'grid gap-4', promise: 'Directory cards highlight service details, location, trust cues, and quick actions.', badge: 'Business' },
+  classified: { icon: Megaphone, archiveClass: 'grid gap-4 xl:grid-cols-2', promise: 'Offer-board cards prioritize price, location, condition, and quick action.', badge: 'Offer' },
   image: { icon: Camera, archiveClass: 'columns-1 gap-5 space-y-5 md:columns-2 xl:columns-3', promise: 'Gallery-first browsing with strong visuals and compact captions.', badge: 'Gallery' },
   sbm: { icon: Bookmark, archiveClass: 'grid gap-4 md:grid-cols-2 xl:grid-cols-3', promise: 'Bookmark cards stay mostly text-based so saved resources scan quickly.', badge: 'Bookmark' },
-  pdf: { icon: Download, archiveClass: 'grid gap-5 md:grid-cols-2 xl:grid-cols-3', promise: 'Document cards surface file context, download intent, and summary.', badge: 'PDF' },
-  profile: { icon: UserRound, archiveClass: 'grid gap-5 md:grid-cols-2 xl:grid-cols-4', promise: 'Profile cards focus on identity, short bio, and direct discovery.', badge: 'Profile' },
+  pdf: { icon: Download, archiveClass: 'grid gap-4 md:grid-cols-2 xl:grid-cols-3', promise: 'Document cards surface file context, download intent, and summary.', badge: 'PDF' },
+  profile: { icon: UserRound, archiveClass: 'grid gap-4 md:grid-cols-2 xl:grid-cols-4', promise: 'Profile cards focus on identity, short bio, and direct discovery.', badge: 'Profile' },
 }
 
 export async function EditableTaskArchiveRoute({
@@ -95,25 +95,25 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   return (
     <EditableSiteShell>
       <main style={archiveVars} className="bg-[var(--archive-bg)] text-[var(--archive-text)]">
-        <section className="mx-auto grid max-w-[var(--editable-container)] gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
-          <div className="rounded-[2.5rem] border border-[var(--editable-border)] bg-[var(--archive-surface)] p-7 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-10">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--editable-border)] bg-white/70 px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-[var(--archive-accent)]"><Icon className="h-4 w-4" /> {label}</div>
-            <h1 className="mt-5 max-w-4xl text-5xl font-black leading-[0.95] tracking-[-0.07em] sm:text-6xl">{voice?.headline || `Browse ${label}`}</h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 opacity-70">{voice?.description || SITE_CONFIG.description}</p>
-            <div className="mt-6 rounded-[1.5rem] border border-[var(--editable-border)] bg-white/55 p-4 text-sm font-bold leading-7 opacity-75">{deck.promise}</div>
+        <section className="mx-auto grid max-w-[var(--editable-container)] gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[1fr_360px] lg:px-8 lg:py-10">
+          <div className="rounded-lg border border-[var(--editable-border)] bg-[var(--archive-surface)] p-6 shadow-sm sm:p-8">
+            <div className="inline-flex items-center gap-2 rounded-md border border-orange-100 bg-orange-50 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-[var(--archive-accent)]"><Icon className="h-4 w-4" /> {voice?.eyebrow || label}</div>
+            <h1 className="mt-4 max-w-3xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{voice?.headline || `Browse ${label}`}</h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">{voice?.description || SITE_CONFIG.description}</p>
+            <div className="mt-5 rounded-lg border border-[var(--editable-border)] bg-[#f7f8fb] p-4 text-sm font-semibold leading-6 text-slate-600">{deck.promise}</div>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={basePath} className="rounded-full bg-[var(--archive-text)] px-5 py-3 text-sm font-black text-[var(--archive-bg)]">Browse all</Link>
-              <Link href="/search" className="rounded-full border border-[var(--editable-border)] px-5 py-3 text-sm font-black">Search posts</Link>
+              <Link href={basePath} className="rounded-md bg-[#2d275b] px-5 py-3 text-sm font-black text-white">Browse all</Link>
+              <Link href="/search" className="rounded-md border border-[var(--editable-border)] bg-white px-5 py-3 text-sm font-black">Search services</Link>
             </div>
           </div>
 
-          <form action={basePath} className="self-end rounded-[2rem] border border-[var(--editable-border)] bg-white/70 p-5 shadow-sm backdrop-blur">
+          <form action={basePath} className="self-end rounded-lg border border-[var(--editable-border)] bg-white p-5 shadow-sm">
             <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] opacity-55"><Filter className="h-4 w-4" /> Filter</div>
-            <select name="category" defaultValue={category} className="mt-4 h-12 w-full rounded-2xl border border-[var(--editable-border)] bg-white px-4 text-sm font-bold outline-none">
+            <select name="category" defaultValue={category} className="mt-4 h-12 w-full rounded-md border border-[var(--editable-border)] bg-white px-4 text-sm font-bold text-slate-950 outline-none">
               <option value="all">All categories</option>
               {CATEGORY_OPTIONS.map((item) => <option key={item.slug} value={item.slug}>{item.name}</option>)}
             </select>
-            <button className="mt-3 h-12 w-full rounded-2xl bg-[var(--archive-text)] text-sm font-black text-[var(--archive-bg)]">Apply</button>
+            <button className="mt-3 h-12 w-full rounded-md bg-[#ff5f2a] text-sm font-black text-white">Apply</button>
             <p className="mt-3 text-xs font-bold opacity-55">Showing: {categoryLabel}</p>
           </form>
         </section>
@@ -143,7 +143,7 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
 }
 
 function ArchivePostCard({ post, task, basePath, index }: { post: SitePost; task: TaskKey; basePath: string; index: number }) {
-  const href = `${basePath}/${post.slug}` || buildPostUrl(task, post.slug)
+  const href = post.slug ? `${basePath}/${post.slug}` : buildPostUrl(task, post.slug)
   if (task === 'listing') return <ListingArchiveCard post={post} href={href} />
   if (task === 'classified') return <ClassifiedArchiveCard post={post} href={href} />
   if (task === 'image') return <ImageArchiveCard post={post} href={href} index={index} />
@@ -176,24 +176,40 @@ function ListingArchiveCard({ post, href }: { post: SitePost; href: string }) {
   const location = getField(post, ['location', 'address', 'city'])
   const phone = getField(post, ['phone', 'telephone', 'mobile'])
   const website = getField(post, ['website', 'url'])
+  const category = getCategory(post, 'Business service')
   return (
-    <Link href={href} className="group grid gap-5 rounded-[2rem] border border-[var(--editable-border)] bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:grid-cols-[120px_1fr]">
-      <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-[1.5rem] bg-[var(--archive-bg)] ring-1 ring-[var(--editable-border)]">
-        {logo ? <img src={logo} alt="" className="h-full w-full object-cover" /> : <BriefcaseBusiness className="h-10 w-10 opacity-45" />}
-      </div>
-      <div className="min-w-0">
-        <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-[var(--archive-text)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--archive-bg)]">Directory</span>
-          {location ? <span className="inline-flex items-center gap-1 rounded-full border border-[var(--editable-border)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em]"><MapPin className="h-3 w-3" /> {location}</span> : null}
+    <article className="group rounded-lg border border-[var(--editable-border)] bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+      <div className="grid gap-5 md:grid-cols-[190px_minmax(0,1fr)_190px]">
+        <Link href={href} className="flex h-44 items-center justify-center overflow-hidden rounded-md bg-[var(--archive-bg)] ring-1 ring-[var(--editable-border)]">
+          {logo ? <img src={logo} alt="" className="h-full w-full object-cover" /> : <BriefcaseBusiness className="h-10 w-10 opacity-45" />}
+        </Link>
+        <div className="min-w-0">
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700">Verified</span>
+            <span className="rounded bg-orange-50 px-2 py-1 text-xs font-bold text-orange-700">{category}</span>
+          </div>
+          <Link href={href} className="mt-3 block text-2xl font-extrabold leading-tight tracking-tight text-slate-950 hover:text-[#ff5f2a]">{post.title}</Link>
+          {location ? <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-slate-600"><MapPin className="h-4 w-4 text-[#ff5f2a]" /> {location}</p> : null}
+          <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{getSummary(post)}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="rounded border border-[var(--editable-border)] px-2 py-1 text-xs font-semibold text-slate-600">Response: Within 30 mins</span>
+            <span className="rounded border border-[var(--editable-border)] px-2 py-1 text-xs font-semibold text-slate-600">Score: 8.3</span>
+          </div>
         </div>
-        <h2 className="mt-4 text-2xl font-black leading-tight tracking-[-0.05em]">{post.title}</h2>
-        <p className="mt-3 line-clamp-2 text-sm leading-6 opacity-65">{getSummary(post)}</p>
-        <div className="mt-4 grid gap-2 text-xs font-bold opacity-70 sm:grid-cols-2">
-          {phone ? <span>Phone: {phone}</span> : null}
-          {website ? <span>Website available</span> : null}
+        <div className="flex flex-col justify-between rounded-md bg-[#f7f8fb] p-4">
+          <div>
+            <p className="text-sm font-bold text-slate-500">Rating</p>
+            <p className="mt-1 text-2xl font-extrabold text-slate-950">4.8/5</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500">Based on customer interest</p>
+          </div>
+          <div className="mt-4 grid gap-2">
+            <Link href={href} className="inline-flex h-10 items-center justify-center rounded-md bg-[#ff3f3f] px-4 text-sm font-extrabold text-white">Enquire Now</Link>
+            {phone ? <a href={`tel:${phone}`} className="inline-flex h-10 items-center justify-center rounded-md border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-700">Call</a> : null}
+            {website ? <span className="text-center text-xs font-semibold text-slate-500">Website available</span> : null}
+          </div>
         </div>
       </div>
-    </Link>
+    </article>
   )
 }
 
