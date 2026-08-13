@@ -31,7 +31,7 @@ export function EditableFooter() {
                 <img src="/favicon.png?v=20260413" alt={brandName} className="h-8 w-8 object-contain" />
               </span>
               <span>
-                <span className="block text-xl font-extrabold tracking-tight text-[#ff5f2a]">{brandName}</span>
+                <span className="block text-xl font-extrabold tracking-tight text-[#ff6b2b]">{brandName}</span>
                 <span className="block text-xs font-bold text-slate-500">{globalContent.footer.tagline}</span>
               </span>
             </Link>
@@ -76,7 +76,7 @@ export function EditableFooter() {
                 <p className="text-sm font-bold text-slate-950">{title}</p>
                 <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
                   {links.map((label) => (
-                    <Link key={label} href={`/search?q=${encodeURIComponent(label)}`} className="text-sm text-slate-600 hover:text-[#ff5f2a]">{label}</Link>
+                    <Link key={label} href={`/search?q=${encodeURIComponent(label)}`} className="text-sm text-slate-600 hover:text-[#ff6b2b]">{label}</Link>
                   ))}
                 </div>
               </div>

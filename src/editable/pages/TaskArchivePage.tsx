@@ -20,6 +20,21 @@ export const taskMetadata = (task: TaskKey, path: string) =>
     description: taskPageMetadata[task]?.description,
   })
 
+const HTML_ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: "\"", apos: "'", nbsp: " ", hellip: "…", mdash: "—", ndash: "–", lsquo: "‘", rsquo: "’", ldquo: "“", rdquo: "”" }
+const fromCode = (code: number, fallback: string) => code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : fallback
+const decodeEntities = (value: string) => value
+  .replace(/&#x([0-9a-f]+);/gi, (match, code) => fromCode(parseInt(code, 16), match))
+  .replace(/&#(\d+);/g, (match, code) => fromCode(Number(code), match))
+  .replace(/&([a-z]+);/gi, (match, name) => HTML_ENTITIES[name.toLowerCase()] ?? match)
+const stripHtml = (value: string) => value
+  .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
+  .replace(/<!--[\s\S]*?-->/g, ' ')
+  .replace(/<[^>]*>/g, ' ')
+const plainText = (value: unknown, limit = 260) => {
+  if (typeof value !== 'string') return ''
+  const clean = decodeEntities(stripHtml(value)).replace(/\s+/g, ' ').trim()
+  return clean.length > limit ? `${clean.slice(0, limit).trim()}…` : clean
+}
 const getContent = (post: SitePost) => post.content && typeof post.content === 'object' ? post.content as Record<string, unknown> : {}
 const asText = (value: unknown) => typeof value === 'string' ? value.trim() : ''
 const isUrl = (value: string) => value.startsWith('/') || /^https?:\/\//i.test(value)
@@ -35,12 +50,12 @@ const getImages = (post: SitePost) => {
 
 const placeholder = '/placeholder.svg?height=900&width=1200'
 const getImage = (post: SitePost) => getImages(post)[0] || placeholder
-const getCategory = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
-const getSummary = (post: SitePost) => post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || asText(getContent(post).body)
+const getCategory = (post: SitePost, fallback: string) => plainText(getContent(post).category, 60) || post.tags?.[0] || fallback
+const getSummary = (post: SitePost) => plainText(post.summary) || plainText(getContent(post).description) || plainText(getContent(post).excerpt) || plainText(getContent(post).body)
 const getField = (post: SitePost, keys: string[]) => {
   const content = getContent(post)
   for (const key of keys) {
-    const value = asText(content[key])
+    const value = plainText(content[key], 120)
     if (value) return value
   }
   return ''
@@ -113,7 +128,7 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
               <option value="all">All categories</option>
               {CATEGORY_OPTIONS.map((item) => <option key={item.slug} value={item.slug}>{item.name}</option>)}
             </select>
-            <button className="mt-3 h-12 w-full rounded-md bg-[#ff5f2a] text-sm font-black text-white">Apply</button>
+            <button className="mt-3 h-12 w-full rounded-md bg-[#ff6b2b] text-sm font-black text-white">Apply</button>
             <p className="mt-3 text-xs font-bold opacity-55">Showing: {categoryLabel}</p>
           </form>
         </section>
@@ -188,8 +203,8 @@ function ListingArchiveCard({ post, href }: { post: SitePost; href: string }) {
             <span className="rounded bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700">Verified</span>
             <span className="rounded bg-orange-50 px-2 py-1 text-xs font-bold text-orange-700">{category}</span>
           </div>
-          <Link href={href} className="mt-3 block text-2xl font-extrabold leading-tight tracking-tight text-slate-950 hover:text-[#ff5f2a]">{post.title}</Link>
-          {location ? <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-slate-600"><MapPin className="h-4 w-4 text-[#ff5f2a]" /> {location}</p> : null}
+          <Link href={href} className="mt-3 block text-2xl font-extrabold leading-tight tracking-tight text-slate-950 hover:text-[#ff6b2b]">{post.title}</Link>
+          {location ? <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-slate-600"><MapPin className="h-4 w-4 text-[#ff6b2b]" /> {location}</p> : null}
           <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{getSummary(post)}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <span className="rounded border border-[var(--editable-border)] px-2 py-1 text-xs font-semibold text-slate-600">Response: Within 30 mins</span>
@@ -203,7 +218,7 @@ function ListingArchiveCard({ post, href }: { post: SitePost; href: string }) {
             <p className="mt-1 text-xs font-semibold text-slate-500">Based on customer interest</p>
           </div>
           <div className="mt-4 grid gap-2">
-            <Link href={href} className="inline-flex h-10 items-center justify-center rounded-md bg-[#ff3f3f] px-4 text-sm font-extrabold text-white">Enquire Now</Link>
+            <Link href={href} className="inline-flex h-10 items-center justify-center rounded-md bg-[#ff6b2b] px-4 text-sm font-extrabold text-white">Enquire Now</Link>
             {phone ? <a href={`tel:${phone}`} className="inline-flex h-10 items-center justify-center rounded-md border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-700">Call</a> : null}
             {website ? <span className="text-center text-xs font-semibold text-slate-500">Website available</span> : null}
           </div>

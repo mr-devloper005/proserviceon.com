@@ -45,7 +45,7 @@ export function EditableContactLeadForm() {
       </div>
       <label className="mt-4 grid gap-2 text-sm font-black text-slate-800">
         Message
-        <textarea name="message" required rows={6} placeholder="Tell us what you need help with..." className="rounded-md border border-[var(--editable-border)] bg-white px-4 py-3 text-base font-medium text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-[#ff5f2a]" />
+        <textarea name="message" required rows={6} placeholder="Tell us what you need help with..." className="rounded-md border border-[var(--editable-border)] bg-white px-4 py-3 text-base font-medium text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-[#ff6b2b]" />
       </label>
       <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       {message ? (
@@ -54,7 +54,7 @@ export function EditableContactLeadForm() {
           <span>{message}</span>
         </div>
       ) : null}
-      <button type="submit" disabled={status === 'submitting'} className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#ff5f2a] px-6 text-sm font-black uppercase tracking-[0.14em] text-white shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70">
+      <button type="submit" disabled={status === 'submitting'} className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#ff6b2b] px-6 text-sm font-black uppercase tracking-[0.14em] text-white shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70">
         {status === 'submitting' ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
         Send message
       </button>
@@ -66,7 +66,7 @@ function Field({ name, label, type = 'text', placeholder, required = false }: { 
   return (
     <label className="grid gap-2 text-sm font-black text-slate-800">
       {label}
-      <input name={name} type={type} required={required} placeholder={placeholder} className="h-12 rounded-md border border-[var(--editable-border)] bg-white px-4 text-base font-medium text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-[#ff5f2a]" />
+      <input name={name} type={type} required={required} placeholder={placeholder} className="h-12 rounded-md border border-[var(--editable-border)] bg-white px-4 text-base font-medium text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-[#ff6b2b]" />
     </label>
   )
 }

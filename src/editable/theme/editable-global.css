@@ -20,6 +20,8 @@ body {
 :root {
   --editable-container: 1180px;
   --editable-border: rgba(21, 24, 39, 0.12);
+  --editable-page-bg: var(--slot4-page-bg, #f7f8fb);
+  --editable-page-text: var(--slot4-page-text, #151827);
 }
 
 ::selection {
