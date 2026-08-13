@@ -32,7 +32,7 @@ const taskIcon: Record<string, typeof FileText> = {
   sbm: ArrowRight,
 }
 
-const fieldClass = 'rounded-md border border-[var(--editable-border)] bg-white px-4 py-3 text-sm font-bold text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-[#ff5f2a]'
+const fieldClass = 'rounded-md border border-[var(--editable-border)] bg-white px-4 py-3 text-sm font-bold text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-[#ff6b2b]'
 
 const saveDraft = (draft: DraftPost) => {
   try {
@@ -84,17 +84,17 @@ export default function CreatePage() {
   if (!session) {
     return (
       <EditableSiteShell>
-        <main className="min-h-screen bg-[var(--editable-page-bg,#fff7ee)] px-4 py-12 text-[var(--editable-page-text,#2f1d16)] sm:px-6 lg:px-8">
+        <main className="min-h-screen bg-[var(--editable-page-bg)] px-4 py-12 text-[var(--editable-page-text)] sm:px-6 lg:px-8">
           <section className="mx-auto grid max-w-5xl gap-8 rounded-lg border border-[var(--editable-border)] bg-white p-7 shadow-sm md:grid-cols-[0.9fr_1.1fr] md:p-10">
             <div className="flex h-full min-h-72 items-center justify-center rounded-lg bg-[#2d275b] text-white">
               <Lock className="h-20 w-20 opacity-80" />
             </div>
             <div className="self-center">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#ff5f2a]">{pagesContent.create.locked.badge}</p>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#ff6b2b]">{pagesContent.create.locked.badge}</p>
               <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{pagesContent.create.locked.title}</h1>
               <p className="mt-6 max-w-xl text-base font-semibold leading-8 opacity-70">{pagesContent.create.locked.description}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/login" className="inline-flex items-center gap-2 rounded-md bg-[#ff5f2a] px-6 py-3 text-sm font-black text-white">Login <ArrowRight className="h-4 w-4" /></Link>
+                <Link href="/login" className="inline-flex items-center gap-2 rounded-md bg-[#ff6b2b] px-6 py-3 text-sm font-black text-white">Login <ArrowRight className="h-4 w-4" /></Link>
                 <Link href="/signup" className="inline-flex items-center gap-2 rounded-md border border-[var(--editable-border)] bg-white px-6 py-3 text-sm font-black">Sign up</Link>
               </div>
             </div>
@@ -106,11 +106,11 @@ export default function CreatePage() {
 
   return (
     <EditableSiteShell>
-      <main className="min-h-screen bg-[var(--editable-page-bg,#fff7ee)] text-[var(--editable-page-text,#2f1d16)]">
+      <main className="min-h-screen bg-[var(--editable-page-bg)] text-[var(--editable-page-text)]">
         <section className="mx-auto max-w-[var(--editable-container)] px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
           <div className="grid gap-8 rounded-lg border border-[var(--editable-border)] bg-white p-6 shadow-sm lg:grid-cols-[0.85fr_1.15fr] lg:p-8">
             <aside>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#ff5f2a]">{pagesContent.create.hero.badge}</p>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#ff6b2b]">{pagesContent.create.hero.badge}</p>
               <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{pagesContent.create.hero.title}</h1>
               <p className="mt-6 max-w-xl text-base font-semibold leading-8 opacity-70">{pagesContent.create.hero.description}</p>
               <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -155,7 +155,7 @@ export default function CreatePage() {
                 </div>
               ) : null}
 
-              <button type="submit" className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#ff5f2a] px-6 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5">
+              <button type="submit" className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#ff6b2b] px-6 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5">
                 <Send className="h-4 w-4" /> {pagesContent.create.submitLabel}
               </button>
             </form>

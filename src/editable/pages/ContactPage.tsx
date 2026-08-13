@@ -14,7 +14,7 @@ function getTone(kind: ReturnType<typeof getProductKind>) {
       panel: 'border border-slate-200 bg-white',
       soft: 'border border-slate-200 bg-white',
       muted: 'text-slate-600',
-      action: 'bg-[#ff5f2a] text-white hover:bg-[#ed4d19]',
+      action: 'bg-[#ff6b2b] text-white hover:bg-[#e55a1f]',
     }
   }
   if (kind === 'editorial') {
@@ -79,13 +79,13 @@ export default function ContactPage() {
       <main className="mx-auto max-w-[var(--editable-container)] px-4 py-10 sm:px-6 lg:px-8">
         <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#ff5f2a]">{pagesContent.contact.eyebrow}</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#ff6b2b]">{pagesContent.contact.eyebrow}</p>
             <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{pagesContent.contact.title}</h1>
             <p className={`mt-5 max-w-2xl text-sm leading-8 ${tone.muted}`}>{pagesContent.contact.description}</p>
             <div className="mt-8 space-y-4">
               {lanes.map((lane) => (
                 <div key={lane.title} className={`rounded-lg p-5 shadow-sm ${tone.soft}`}>
-                  <lane.icon className="h-5 w-5 text-[#ff5f2a]" />
+                  <lane.icon className="h-5 w-5 text-[#ff6b2b]" />
                   <h2 className="mt-3 text-xl font-extrabold tracking-tight">{lane.title}</h2>
                   <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{lane.body}</p>
                 </div>

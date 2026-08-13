@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function SignupPage() {
   return (
     <EditableSiteShell>
-      <main className="bg-[var(--editable-page-text,#2f1d16)] text-[var(--editable-page-bg,#fff4e4)]">
+      <main className="bg-[var(--editable-page-text)] text-[var(--editable-page-bg)]">
         <section className="mx-auto grid min-h-[calc(100vh-12rem)] max-w-[var(--editable-container)] items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[420px_1fr] lg:px-8">
           <div className="rounded-lg border border-white/10 bg-white p-6 text-slate-950 shadow-[0_24px_70px_rgba(0,0,0,0.22)] sm:p-8">
             <h1 className="text-3xl font-extrabold tracking-tight">{pagesContent.auth.signup.formTitle}</h1>

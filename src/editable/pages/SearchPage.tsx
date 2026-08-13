@@ -20,8 +20,19 @@ export async function generateMetadata(): Promise<Metadata> {
   })
 }
 
-const stripHtml = (value: string) => value.replace(/<[^>]*>/g, ' ')
-const compactText = (value: unknown) => typeof value === 'string' ? stripHtml(value).replace(/\s+/g, ' ').trim().toLowerCase() : ''
+const HTML_ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: "\"", apos: "'", nbsp: " ", hellip: "…", mdash: "—", ndash: "–", lsquo: "‘", rsquo: "’", ldquo: "“", rdquo: "”" }
+const fromCode = (code: number, fallback: string) => code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : fallback
+const decodeEntities = (value: string) => value
+  .replace(/&#x([0-9a-f]+);/gi, (match, code) => fromCode(parseInt(code, 16), match))
+  .replace(/&#(\d+);/g, (match, code) => fromCode(Number(code), match))
+  .replace(/&([a-z]+);/gi, (match, name) => HTML_ENTITIES[name.toLowerCase()] ?? match)
+const stripHtml = (value: string) => value
+  .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
+  .replace(/<!--[\s\S]*?-->/g, ' ')
+  .replace(/<[^>]*>/g, ' ')
+const plainText = (value: unknown) => typeof value === 'string' ? decodeEntities(stripHtml(value)).replace(/\s+/g, ' ').trim() : ''
+const compactText = (value: unknown) => plainText(value).toLowerCase()
+const compactRaw = (value: unknown) => typeof value === 'string' ? value.trim() : ''
 const getContent = (post: SitePost) => post.content && typeof post.content === 'object' ? post.content as Record<string, unknown> : {}
 const getImage = (post: SitePost) => {
   const content = getContent(post)
@@ -29,8 +40,7 @@ const getImage = (post: SitePost) => {
   const images = Array.isArray(content.images) ? content.images.find((item) => typeof item === 'string') as string | undefined : ''
   return media || compactRaw(content.featuredImage) || compactRaw(content.image) || compactRaw(content.thumbnail) || images || ''
 }
-const compactRaw = (value: unknown) => typeof value === 'string' ? value.trim() : ''
-const summaryOf = (post: SitePost) => post.summary || compactRaw(getContent(post).description) || compactRaw(getContent(post).excerpt) || ''
+const summaryOf = (post: SitePost) => plainText(post.summary) || plainText(getContent(post).description) || plainText(getContent(post).excerpt) || ''
 
 const matches = (post: SitePost, query: string, category: string, task: string) => {
   const content = getContent(post)
@@ -87,11 +97,11 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
 
   return (
     <EditableSiteShell>
-      <main className="min-h-screen bg-[var(--editable-page-bg,#fff7ee)] text-[var(--editable-page-text,#2f1d16)]">
+      <main className="min-h-screen bg-[var(--editable-page-bg)] text-[var(--editable-page-text)]">
         <section className="mx-auto max-w-[var(--editable-container)] px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
           <div className="grid gap-6 rounded-lg border border-[var(--editable-border)] bg-white p-6 shadow-sm md:grid-cols-[0.8fr_1.2fr] lg:p-8">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#ff5f2a]">{pagesContent.search.hero.badge}</p>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#ff6b2b]">{pagesContent.search.hero.badge}</p>
               <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{pagesContent.search.hero.title}</h1>
               <p className="mt-6 max-w-xl text-base font-semibold leading-8 opacity-70">{pagesContent.search.hero.description}</p>
             </div>
@@ -111,7 +121,7 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
                   {enabledTasks.map((item) => <option key={item.key} value={item.key}>{item.label}</option>)}
                 </select>
               </div>
-              <button className="mt-3 inline-flex h-12 w-full items-center justify-center rounded-md bg-[#ff5f2a] px-6 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5" type="submit">Search</button>
+              <button className="mt-3 inline-flex h-12 w-full items-center justify-center rounded-md bg-[#ff6b2b] px-6 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5" type="submit">Search</button>
             </form>
           </div>
 

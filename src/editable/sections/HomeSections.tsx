@@ -67,11 +67,11 @@ function DirectoryListingCard({ post, href }: { post: SitePost; href: string }) 
           <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700"><CheckCircle2 className="h-3.5 w-3.5" /> Verified</span>
           <span className="inline-flex items-center gap-1 rounded bg-orange-50 px-2 py-1 text-xs font-bold text-orange-700"><Star className="h-3.5 w-3.5 fill-current" /> 4.8</span>
         </div>
-        <Link href={href} className="mt-3 block text-xl font-extrabold leading-tight tracking-tight text-slate-950 hover:text-[#ff5f2a]">{post.title}</Link>
-        <p className="mt-2 flex items-center gap-1 text-sm font-semibold text-slate-600"><MapPin className="h-4 w-4 text-[#ff5f2a]" /> {location}</p>
+        <Link href={href} className="mt-3 block text-xl font-extrabold leading-tight tracking-tight text-slate-950 hover:text-[#ff6b2b]">{post.title}</Link>
+        <p className="mt-2 flex items-center gap-1 text-sm font-semibold text-slate-600"><MapPin className="h-4 w-4 text-[#ff6b2b]" /> {location}</p>
         <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">{getEditableExcerpt(post, 135)}</p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Link href={href} className="inline-flex h-10 items-center rounded-md bg-[#ff5f2a] px-4 text-sm font-extrabold text-white">Enquire Now</Link>
+          <Link href={href} className="inline-flex h-10 items-center rounded-md bg-[#ff6b2b] px-4 text-sm font-extrabold text-white">Enquire Now</Link>
           {phone ? <a href={`tel:${phone}`} className="inline-flex h-10 items-center rounded-md border border-[var(--editable-border)] px-4 text-sm font-bold text-slate-700">Call</a> : null}
         </div>
       </div>
@@ -79,7 +79,7 @@ function DirectoryListingCard({ post, href }: { post: SitePost; href: string }) 
   )
 }
 
-export function EditableHomeHero({ primaryTask, primaryRoute }: HomeSectionProps) {
+export function EditableHomeHero({ primaryRoute }: HomeSectionProps) {
   const heroTitle = pagesContent.home.hero.title.join(' ')
   return (
     <section className="bg-[#2d275b] text-white">
@@ -99,22 +99,22 @@ export function EditableHomeHero({ primaryTask, primaryRoute }: HomeSectionProps
             <Search className="h-5 w-5 text-slate-500" />
             <input name="q" placeholder={pagesContent.home.hero.searchPlaceholder} className="min-w-0 flex-1 bg-transparent text-sm font-bold text-slate-950 outline-none placeholder:text-slate-500" />
           </label>
-          <button className="min-h-14 bg-[#ff5f2a] px-6 text-sm font-extrabold text-white" type="submit">Search</button>
+          <button className="min-h-14 bg-[#ff6b2b] px-6 text-sm font-extrabold text-white" type="submit">Search</button>
         </form>
 
         <div className="-mb-36 mt-12 grid gap-4 md:grid-cols-3">
           {serviceGroups.map((group) => (
             <article key={group.title} className={`${group.tone} rounded-lg border border-white/50 p-5 text-slate-950 shadow-[0_18px_50px_rgba(0,0,0,0.16)]`}>
               <div className="flex items-center justify-center gap-2">
-                <group.icon className="h-5 w-5 text-[#ff5f2a]" />
+                <group.icon className="h-5 w-5 text-[#ff6b2b]" />
                 <h2 className="text-base font-extrabold">{group.title}</h2>
               </div>
               <div className="mt-5 grid grid-cols-2 gap-3">
                 {group.items.map((item) => (
-                  <Link key={item} href={serviceHref(item)} className="rounded-md bg-white/70 px-3 py-3 text-center text-sm font-semibold transition hover:bg-white hover:text-[#ff5f2a]">{item}</Link>
+                  <Link key={item} href={serviceHref(item)} className="rounded-md bg-white/70 px-3 py-3 text-center text-sm font-semibold transition hover:bg-white hover:text-[#ff6b2b]">{item}</Link>
                 ))}
               </div>
-              <Link href={primaryRoute} className="mx-auto mt-5 inline-flex items-center gap-1 text-sm font-extrabold text-[#3157ff]">View all <ArrowRight className="h-4 w-4" /></Link>
+              <Link href={primaryRoute} className="mx-auto mt-5 inline-flex items-center gap-1 text-sm font-extrabold text-[#ff6b2b]">View all <ArrowRight className="h-4 w-4" /></Link>
             </article>
           ))}
         </div>
@@ -136,7 +136,7 @@ export function EditableStoryRail({ primaryTask, primaryRoute, posts }: HomeSect
           <Link href="/search" className="inline-flex items-center gap-2 rounded-md border border-[var(--editable-border)] bg-white px-4 py-2 text-sm font-bold">Search all cities <ArrowRight className="h-4 w-4" /></Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
-          {cityCards.map((city, index) => (
+          {cityCards.map((city) => (
             <Link key={city} href={`/search?location=${encodeURIComponent(city)}`} className="group text-center">
               <div className="mx-auto flex aspect-square w-full max-w-[118px] items-center justify-center overflow-hidden rounded-lg bg-[#f1f3f6] ring-1 ring-[var(--editable-border)] transition group-hover:-translate-y-1 group-hover:shadow-lg">
                 <span className="text-2xl font-extrabold text-[#2d275b]">{city.slice(0, 2)}</span>
@@ -153,7 +153,7 @@ export function EditableStoryRail({ primaryTask, primaryRoute, posts }: HomeSect
                 <h2 className={dc.type.sectionTitle}>Featured local businesses</h2>
                 <p className="mt-2 text-sm font-semibold text-slate-600">A quick look at recently added providers and service experts.</p>
               </div>
-              <Link href={primaryRoute} className="hidden text-sm font-extrabold text-[#ff5f2a] sm:inline-flex">View listings</Link>
+              <Link href={primaryRoute} className="hidden text-sm font-extrabold text-[#ff6b2b] sm:inline-flex">View listings</Link>
             </div>
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               {railPosts.map((post) => <DirectoryListingCard key={post.id || post.slug} post={post} href={postHref(primaryTask, post, primaryRoute)} />)}
@@ -165,7 +165,7 @@ export function EditableStoryRail({ primaryTask, primaryRoute, posts }: HomeSect
   )
 }
 
-export function EditableMagazineSplit({ primaryTask, primaryRoute, posts }: HomeSectionProps) {
+export function EditableMagazineSplit(_props: HomeSectionProps) {
   const serviceSections = [
     ['Overseas Education', 'Admission counsellors, university guidance, visa support, and training experts.'],
     ['Aviation Education', 'Pilot training, airport operations, cabin crew courses, and career programs.'],
@@ -183,7 +183,7 @@ export function EditableMagazineSplit({ primaryTask, primaryRoute, posts }: Home
             <div className="mt-6 grid gap-3">
               {trustStats.map(([value, label]) => (
                 <div key={label} className="rounded-lg border border-[var(--editable-border)] bg-white p-4">
-                  <p className="text-2xl font-extrabold text-[#ff5f2a]">{value}</p>
+                  <p className="text-2xl font-extrabold text-[#ff6b2b]">{value}</p>
                   <p className="text-sm font-semibold text-slate-600">{label}</p>
                 </div>
               ))}
@@ -192,12 +192,12 @@ export function EditableMagazineSplit({ primaryTask, primaryRoute, posts }: Home
           <div className="grid gap-4 sm:grid-cols-2">
             {serviceSections.map(([title, description], index) => (
               <article key={title} className="rounded-lg border border-[var(--editable-border)] bg-white p-5 shadow-sm">
-                <div className="flex h-11 w-11 items-center justify-center rounded-md bg-orange-50 text-[#ff5f2a]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-md bg-orange-50 text-[#ff6b2b]">
                   {index === 0 ? <GraduationCap className="h-5 w-5" /> : index === 1 ? <Sparkles className="h-5 w-5" /> : index === 2 ? <Wrench className="h-5 w-5" /> : <ShieldCheck className="h-5 w-5" />}
                 </div>
                 <h3 className="mt-4 text-xl font-extrabold text-slate-950">{title}</h3>
                 <p className="mt-2 min-h-[54px] text-sm leading-6 text-slate-600">{description}</p>
-                <Link href={serviceHref(title)} className="mt-5 inline-flex items-center gap-2 rounded-md border border-[#ff5f2a] px-4 py-2 text-sm font-bold text-[#ff5f2a]">Explore <ArrowRight className="h-4 w-4" /></Link>
+                <Link href={serviceHref(title)} className="mt-5 inline-flex items-center gap-2 rounded-md border border-[#ff6b2b] px-4 py-2 text-sm font-bold text-[#ff6b2b]">Explore <ArrowRight className="h-4 w-4" /></Link>
               </article>
             ))}
           </div>
@@ -249,7 +249,7 @@ export function EditableHomeCta() {
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">Add your category, service description, contact details, and image so visitors can shortlist you faster.</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/create" className="inline-flex h-11 items-center justify-center rounded-md bg-[#ff5f2a] px-5 text-sm font-extrabold text-white">Create listing</Link>
+            <Link href="/create" className="inline-flex h-11 items-center justify-center rounded-md bg-[#ff6b2b] px-5 text-sm font-extrabold text-white">Create listing</Link>
             <Link href="/contact" className="inline-flex h-11 items-center justify-center rounded-md border border-[var(--editable-border)] bg-white px-5 text-sm font-bold text-slate-800">Contact us</Link>
           </div>
         </div>
