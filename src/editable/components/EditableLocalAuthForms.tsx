@@ -31,8 +31,8 @@ const saveSession = (user: Pick<LocalUser, 'name' | 'email'>) => {
   window.dispatchEvent(new Event('slot4-auth-change'))
 }
 
-const inputClass = 'h-12 rounded-md border border-[var(--editable-border)] bg-white px-4 text-base font-bold text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-[#ff5f2a] focus:bg-white'
-const buttonClass = 'inline-flex h-12 items-center justify-center rounded-md bg-[#ff5f2a] px-6 text-sm font-black uppercase tracking-[0.14em] text-white shadow-sm transition hover:-translate-y-0.5 disabled:opacity-60'
+const inputClass = 'h-12 rounded-md border border-[var(--editable-border)] bg-white px-4 text-base font-bold text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-[#ff6b2b] focus:bg-white'
+const buttonClass = 'inline-flex h-12 items-center justify-center rounded-md bg-[#ff6b2b] px-6 text-sm font-black uppercase tracking-[0.14em] text-white shadow-sm transition hover:-translate-y-0.5 disabled:opacity-60'
 
 export function EditableLocalLoginForm() {
   const router = useRouter()

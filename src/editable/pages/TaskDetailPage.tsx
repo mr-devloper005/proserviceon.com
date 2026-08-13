@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { ArrowLeft, Bookmark, Building2, Camera, CheckCircle2, Download, ExternalLink, FileText, Globe2, Mail, MapPin, MessageCircle, Phone, Share2, ShieldCheck, Star, Tag, UserRound } from 'lucide-react'
 import { buildPostMetadata, buildTaskMetadata } from '@/lib/seo'
 import { buildPostUrl, fetchArticleComments, fetchTaskPostBySlug, fetchTaskPosts } from '@/lib/task-data'
-import { getTaskConfig, SITE_CONFIG, type TaskKey } from '@/lib/site-config'
+import { getTaskConfig, type TaskKey } from '@/lib/site-config'
 import type { SitePost } from '@/lib/site-connector'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { globalContent } from '@/editable/content/global.content'
@@ -29,6 +29,17 @@ export async function EditableTaskDetailRoute({ task, params }: { task: TaskKey;
   return <TaskDetailView task={task} post={post} related={related} comments={comments} />
 }
 
+const HTML_ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: "\"", apos: "'", nbsp: " ", hellip: "…", mdash: "—", ndash: "–", lsquo: "‘", rsquo: "’", ldquo: "“", rdquo: "”" }
+const fromCode = (code: number, fallback: string) => code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : fallback
+const decodeEntities = (value: string) => value
+  .replace(/&#x([0-9a-f]+);/gi, (match, code) => fromCode(parseInt(code, 16), match))
+  .replace(/&#(\d+);/g, (match, code) => fromCode(Number(code), match))
+  .replace(/&([a-z]+);/gi, (match, name) => HTML_ENTITIES[name.toLowerCase()] ?? match)
+const stripHtml = (value: string) => value
+  .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
+  .replace(/<!--[\s\S]*?-->/g, ' ')
+  .replace(/<[^>]*>/g, ' ')
+const plainText = (value: unknown) => typeof value === 'string' ? decodeEntities(stripHtml(value)).replace(/\s+/g, ' ').trim() : ''
 const getContent = (post: SitePost) => post.content && typeof post.content === 'object' ? post.content as Record<string, unknown> : {}
 const asText = (value: unknown) => typeof value === 'string' ? value.trim() : ''
 const isUrl = (value: string) => value.startsWith('/') || /^https?:\/\//i.test(value)
@@ -94,8 +105,8 @@ const formatPlainText = (raw: string) => {
     .join('')
 }
 
-const summaryText = (post: SitePost) => post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || ''
-const categoryOf = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
+const summaryText = (post: SitePost) => plainText(post.summary) || plainText(getContent(post).description) || plainText(getContent(post).excerpt) || ''
+const categoryOf = (post: SitePost, fallback: string) => plainText(getContent(post).category) || post.tags?.[0] || fallback
 const mapSrcFor = (post: SitePost) => {
   const address = getField(post, ['address', 'location', 'city'])
   const lat = getField(post, ['lat', 'latitude'])
@@ -178,28 +189,28 @@ function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] 
             <div className="min-w-0">
               <BackLink task="listing" />
               <div className="mt-4 flex flex-wrap items-center gap-2">
-                <span className="rounded bg-[#8b3a12] px-2 py-1 text-xs font-black uppercase text-white">Premium</span>
-                <span className="rounded bg-orange-50 px-2 py-1 text-xs font-bold text-[#ff5f2a]">{category}</span>
+                <span className="rounded bg-[#2d275b] px-2 py-1 text-xs font-black uppercase text-white">Premium</span>
+                <span className="rounded bg-orange-50 px-2 py-1 text-xs font-bold text-[#ff6b2b]">{category}</span>
                 <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700"><ShieldCheck className="h-3.5 w-3.5" /> Verified</span>
               </div>
               <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-4xl">{post.title}</h1>
               <div className="mt-3 flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-700">
-                <span className="inline-flex items-center gap-1"><Star className="h-5 w-5 fill-[#ff9d2f] text-[#ff9d2f]" /> 5.0 <span className="text-slate-500">(23 Reviews)</span></span>
-                {address ? <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4 text-[#ff5f2a]" /> {address}</span> : null}
-                {phone ? <span className="inline-flex items-center gap-1"><Phone className="h-4 w-4 text-[#ff5f2a]" /> {phone}</span> : null}
+                <span className="inline-flex items-center gap-1"><Star className="h-5 w-5 fill-[#ff6b2b] text-[#ff6b2b]" /> 5.0 <span className="text-slate-500">(23 Reviews)</span></span>
+                {address ? <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4 text-[#ff6b2b]" /> {address}</span> : null}
+                {phone ? <span className="inline-flex items-center gap-1"><Phone className="h-4 w-4 text-[#ff6b2b]" /> {phone}</span> : null}
               </div>
             </div>
             <div className="flex flex-wrap gap-2 md:justify-end">
               <a href={phone ? `tel:${phone}` : '#'} className="inline-flex h-11 items-center justify-center rounded-md border border-slate-300 px-4 text-sm font-bold text-slate-700">Call</a>
               <a href={whatsappUrl || '#'} target={whatsappUrl ? '_blank' : undefined} rel={whatsappUrl ? 'noreferrer' : undefined} className="inline-flex h-11 items-center justify-center rounded-md border border-emerald-700 px-4 text-sm font-bold text-emerald-700">Chat</a>
-              <a href={directionsUrl || '#'} target={directionsUrl ? '_blank' : undefined} rel={directionsUrl ? 'noreferrer' : undefined} className="inline-flex h-11 items-center justify-center rounded-md border border-[#ff5f2a] px-4 text-sm font-bold text-[#ff5f2a]">Directions</a>
-              <a href={`mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(address || post.title)}`} className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-[#ff5f2a] text-[#ff5f2a]" aria-label="Share listing"><Share2 className="h-4 w-4" /></a>
-              <a href={email ? `mailto:${email}` : phone ? `tel:${phone}` : '#'} className="inline-flex h-11 items-center justify-center rounded-md bg-[#ff5f2a] px-5 text-sm font-extrabold text-white">Enquire Now</a>
+              <a href={directionsUrl || '#'} target={directionsUrl ? '_blank' : undefined} rel={directionsUrl ? 'noreferrer' : undefined} className="inline-flex h-11 items-center justify-center rounded-md border border-[#ff6b2b] px-4 text-sm font-bold text-[#ff6b2b]">Directions</a>
+              <a href={`mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(address || post.title)}`} className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-[#ff6b2b] text-[#ff6b2b]" aria-label="Share listing"><Share2 className="h-4 w-4" /></a>
+              <a href={email ? `mailto:${email}` : phone ? `tel:${phone}` : '#'} className="inline-flex h-11 items-center justify-center rounded-md bg-[#ff6b2b] px-5 text-sm font-extrabold text-white">Enquire Now</a>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 bg-[#fff7f7] py-7">
+        <div className="mt-8 bg-[#f7f8fb] py-7">
           <div className="mx-auto grid max-w-3xl grid-cols-2 gap-6 px-4 text-center sm:grid-cols-4">
             {[
               ['Established', '2000'],
@@ -208,7 +219,7 @@ function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] 
               ['Verified', 'Yes'],
             ].map(([label, value]) => (
               <div key={label}>
-                <p className="text-2xl font-extrabold text-[#ff5f2a]">{value}</p>
+                <p className="text-2xl font-extrabold text-[#ff6b2b]">{value}</p>
                 <p className="mt-1 text-sm font-semibold text-slate-600">{label}</p>
               </div>
             ))}
@@ -249,7 +260,7 @@ function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] 
               <div className="mt-5 grid gap-4 md:grid-cols-3">
                 {['Clear service information', 'Direct contact options', 'Local business presence'].map((title) => (
                   <div key={title} className="rounded-lg border border-[var(--editable-border)] bg-[#f7f8fb] p-5 text-center">
-                    <ShieldCheck className="mx-auto h-8 w-8 text-[#ff5f2a]" />
+                    <ShieldCheck className="mx-auto h-8 w-8 text-[#ff6b2b]" />
                     <h3 className="mt-3 text-base font-extrabold text-slate-950">{title}</h3>
                     <p className="mt-2 text-sm leading-6 text-slate-600">Useful listing details help customers make confident decisions.</p>
                   </div>
@@ -288,7 +299,7 @@ function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] 
           <div className="flex flex-wrap gap-2">
             {phone ? <a href={`tel:${phone}`} className="inline-flex h-11 items-center rounded-md border border-slate-300 px-4 text-sm font-bold text-slate-700">{phone}</a> : null}
             <a href={whatsappUrl || '#'} target={whatsappUrl ? '_blank' : undefined} rel={whatsappUrl ? 'noreferrer' : undefined} className="inline-flex h-11 items-center rounded-md border border-emerald-700 px-4 text-sm font-bold text-emerald-700">Chat</a>
-            <a href={email ? `mailto:${email}` : phone ? `tel:${phone}` : '#'} className="inline-flex h-11 items-center rounded-md bg-[#ff3f3f] px-5 text-sm font-extrabold text-white">Enquire Now</a>
+            <a href={email ? `mailto:${email}` : phone ? `tel:${phone}` : '#'} className="inline-flex h-11 items-center rounded-md bg-[#ff6b2b] px-5 text-sm font-extrabold text-white">Enquire Now</a>
           </div>
         </div>
       </div>
@@ -485,7 +496,7 @@ function BadgeLine({ label, value }: { label: string; value: string }) {
   return <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-sm"><span className="font-black uppercase tracking-[0.16em] opacity-60">{label}</span><span className="font-black">{value}</span></div>
 }
 
-function RelatedPanel({ task, post, related, compact = false }: { task: TaskKey; post: SitePost; related: SitePost[]; compact?: boolean }) {
+function RelatedPanel({ task, related, compact = false }: { task: TaskKey; post?: SitePost; related: SitePost[]; compact?: boolean }) {
   const taskConfig = getTaskConfig(task)
   return (
     <aside className="min-w-0 space-y-5">
